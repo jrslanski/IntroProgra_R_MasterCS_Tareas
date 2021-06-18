@@ -1,0 +1,161 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Funciones en R:
+
+
+- ¿Cuál es la estructura de una función en R?
+En R, una función es un objeto, por tanto, se declara como una variable con la sintaxis
+mi_funcion <- , seguido de lo cual, se especifica la función utilizando la palabra reservada
+"function" seguido por los argumentos y el cuerpo de la función (qué hace la función con los argumentos)
+Por ejemplo:
+
+nombre_funcion = function(arg1, arg2, ...) {
+    CUERPO DE LA  FUNCION
+}
+
+
+- Ejemplo de una función
+La siguiente funcion retorna TRUE si el argumento introducido es par, y false si no lo es
+
+```{r}
+
+is_even <- function(x) {
+  x%%2 == 0
+}
+
+print(is_even(10))
+print(is_even(21))
+```
+
+- Argumentos de una función
+Los argumentos de una función Son las entradas De dicha función. Pueden declararse de varias maneras.
+
+Podemos mencionar que pueden declararse sin un valor especifico o puede asignarseles un valor por defecto 
+por si en caso no se proveyera dicho argumento al llamar a la función.
+
+Por ejemplo:
+```{r}
+f1 = function(x = 10) {
+  x+10
+}
+
+print(f1())
+print(f1(12))
+```
+
+Como se acaba de notar, en la primera llamada a la función, se tomo el valor por defecto de x, que es 10 y por tanto, el resultado dio 20.
+
+
+- Argumentos por valor:
+
+Argumentos por valor significa que R , Hace una copia El argumento que se está llamando Y no introduce dentro de la función una referencia a dicho objeto. Como resultado no se puede cambiar el valor de una variable dentro de una función Si esta variable Fue declarada afuera del bloque o cuerpo de la función.
+A continuación un ejemplo:
+```{r}
+double <- function(x){
+  x <- x * 2
+  x
+}
+
+a <- 10
+double(a)
+a
+```
+Como puede verse, el valor de a no se cambio en el ejemplo anterior, porque lo que se paso adentro de la función
+fue una copia del valor, no la referencia.
+
+
+
+
+
+Familia Apply:
+
+La familia apply en R es un conjunto de funciones que mapean un tipo de dato (como listas, 
+vectores, dataframes) a otro tipo de dato habiéndoles aplicado una funcion a cada miembro de la entrada. 
+
+
+- lapply:
+lapply Es una función Que puede aplicarse A una lista de objetos Y retorna una lista del mismo tamaño 
+Después de aplicarle a cada elemento 1 por 1 Otra función.
+
+- A continuación dos ejemplos lapply:
+```{r}
+my_list <- list(1, 2, 3, 4, 5)
+add_3 <- function(x){ 
+  x+3
+}
+print(lapply(my_list, add_3))
+
+my_array <- c(2,4,6,8,10)
+multiply_by_10 <- function(x) x*10
+print(lapply(my_array, multiply_by_10) )
+
+
+
+```
+Tal como puede apreciarse en el ejemplo anterior, acepta incluso vectores. Lo importante
+es que como resultado genera una lista después de aplicar la función a cada valor en el 
+vector, list, etc, de entrada.
+
+- sapply:
+
+Esta función es muy parecida a lapply, con la diferencia de que en lugar de retornar una lista
+como resultado de aplicar una función a cada miembro de otra lista, dataframe o vector, esta retorna un vector
+y no una lista. 
+
+
+- A continuación ejemplos de sapply:
+
+```{r}
+print( sapply(my_list, add_3) )
+print( sapply(my_array, multiply_by_10))
+```
+
+Tal como se puede ver en los ejemplos anteriores, se imprimieron dos vectores en lugar 
+de dos listas despues de aplicar la funcion add_3 y multiply_by_10 a cada entrada de sapply 
+respectivamente.
+
+
+
+
+- vapply:
+
+Esta funcion es parecida al resto de funciones de la familia apply, pero tiene la ventaja de que puede
+especificarse el tipo de dato que se quiere como resultado, el cual puede especificarse con un argumento
+de la  función llamado. 
+
+- A continuación, algunos ejemplos de como funciona y por qué es importante:
+
+```{r}
+test <- list(a = c(1, 3, 5), b = c(2,4,6), c = c(9,8,7))
+sapply(test, max)
+```
+si por ejemplo, nuestra lista tuviera vectores de caracteres en lugar de numeros:
+
+```{r}
+test$d <- c("a", "b", "c")
+sapply(test, max)
+```
+
+como puede verse, regresa caracteres en lugar de numeros, lo cual puede llevar a resultados inesperados.
+
+Si ahora, intentamos con vapply, R tendrá una mejor idea de cual es nuestro resultado deseado:
+```{r}
+vapply(test, max, numeric(1))
+```
+Como puede notarse, al correr este segmento de código, se obtiene un error debido a que no es posible
+obtener un vector de numeros como se habia especificado. 
+
+Ahora, si aplicamos v apply a un vector o lista apropiado:
+
+```{r}
+a = list( c(1,3,1,4), c(32,1,31), c(21,4,6))
+
+vapply(a, max, numeric(1))
+
+```
+
+De esa manera, vapply nos da mayor oportunidad de especificar el tipo deseado
+de nuestra operación.
