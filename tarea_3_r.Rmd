@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Investigar cómo leer un csv:
+Para leer un archivo csv y convertirlo en un Dataframe, se puede utilizar la función read.csv("Path_al_archivo")
+
+Investigar la función select en dplyr:
+Con la función select, se puede obtener solo las columnas especificadas en la funcion, por nombre,por posición, por pattern match,
+expresiones regulares, etc.
+
+
+Leer primary results:
+
+```{r}
+library(dplyr)
+dataset_results <- read.csv("./primary_results.csv")
+dataset_results
+
+```
+
+1.1
+
+```{r}
+dataset_results %>%
+  filter( state == "Florida")
+```
+
+
+2.1 
+```{r}
+dataset_results %>%
+  filter((candidate=="Hillary Clinton") | (candidate=="Donald Trump"))
+```
+
+
+2.2
+
+```{r}
+dataset_results %>%
+  filter(party == "Democrat" & county == "Shelby")
+```
+
+
+2.3
+
+```{r}
+dataset_results %>%
+  filter(state=="Alabama" & votes>15000)
+```
+
+3.1
+
+```{r}
+dataset_results %>%
+  filter(state=="Texas" & county=="Denton") %>%
+  select(party, candidate, votes) %>%
+  arrange(desc(votes))
+```
+4.1
+
+```{r}
+
+dataset_results %>%
+  filter(party=="Republican" & candidate=="Ted Cruz" & state=="Alaska") %>%
+  mutate(vote_count = votes/fraction_votes) %>%
+  arrange(desc(vote_count))
+
+```
+
+
+
+
+
+
