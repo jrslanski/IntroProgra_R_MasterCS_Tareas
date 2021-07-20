@@ -1,0 +1,172 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+cargando los datos:
+
+```{r}
+library(tidyverse)
+
+diamonds <- read_csv("diamonds.csv")
+
+diamonds
+```
+
+
+AGREGANDO GEOMETRIAS
+
+1. Dispersion
+
+1.1
+
+```{r}
+
+ggplot(diamonds, aes(x=carat, y=price)) +
+  geom_point()
+
+```
+
+1.2
+
+```{r}
+dispertion_graph <- ggplot(diamonds, aes(x=carat, y=price, color=clarity)) +
+  geom_point()
+```
+
+1.3
+```{r}
+dispertion_graph
+```
+
+2. Histograma
+
+2.1 
+```{r}
+ggplot(diamonds, aes(x=price)) +
+  geom_histogram(bins=40)
+```
+
+2.2
+```{r}
+ggplot(diamonds, aes(x=price)) +
+  geom_histogram(bins=40) +
+  scale_x_log10()
+```
+
+
+
+3. Boxplots
+
+3.1
+
+```{r}
+ggplot(diamonds, aes(x=cut, y=price)) +
+  geom_boxplot() +
+  scale_y_log10()
+```
+
+
+
+3.2
+
+```{r}
+ggplot(diamonds, aes(x=cut, y=price, fill=cut)) +
+  geom_boxplot() +
+  scale_y_log10()
+```
+
+
+4. Faceting
+
+4.1
+```{r}
+
+filtered_price <- diamonds %>%
+  filter(price > 1000, cut %in% c("Good","Ideal","Premium") )
+
+filtered_price
+```
+
+4.2
+
+```{r}
+
+ggplot(filtered_price, aes(x=cut, y = depth)) +
+  geom_col()
+
+```
+
+
+
+4.3
+
+```{r}
+ggplot(filtered_price, aes(x=cut, y = depth)) +
+  geom_col() +
+  facet_wrap(~ clarity)
+```
+
+
+
+4.4
+
+```{r}
+ggplot(filtered_price, aes(x=cut, y = depth, fill = clarity)) +
+  geom_col() +
+  facet_wrap(~ clarity)
+```
+
+GROUPING AND SUMMARIZING
+
+
+1.
+
+```{r}
+
+median_dimension_diamond <- diamonds %>%
+  group_by(cut) %>%
+  summarize(mediaX = mean(x), mediaY = mean(y), mediaZ = mean(z) )
+
+median_dimension_diamond
+
+```
+
+
+
+2.
+
+```{r}
+
+cut_premium <- diamonds %>%
+  filter(cut == "Premium") %>%
+  group_by(clarity) %>%
+  summarize( minPrice = min(price), maxPrice= max(price) )
+
+cut_premium
+
+
+```
+
+
+
+3.
+
+```{r}
+
+ggplot(cut_premium, aes(x=clarity, y=maxPrice, fill=clarity)) +
+  geom_col()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
